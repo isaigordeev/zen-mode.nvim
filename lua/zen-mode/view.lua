@@ -118,7 +118,7 @@ function M.layout(opts)
   return {
     width = M.round(width),
     height = M.round(height),
-    col = M.round((vim.o.columns - width) / 2),
+    col = M.round((vim.o.columns - width) / 2) + (opts.window.col_offset or 0),
     row = M.round((M.height() - height) / 2),
   }
 end
@@ -133,7 +133,8 @@ function M.fix_layout(win_resized)
     end
     local height = vim.api.nvim_win_get_height(M.win)
     local width = vim.api.nvim_win_get_width(M.win)
-    local col = M.round((vim.o.columns - width) / 2)
+    local col_offset = M.opts and M.opts.window and M.opts.window.col_offset or 0
+    local col = M.round((vim.o.columns - width) / 2) + col_offset
     local row = M.round((M.height() - height) / 2)
     local cfg = vim.api.nvim_win_get_config(M.win)
     -- HACK: col is an array?
